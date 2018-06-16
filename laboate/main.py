@@ -1,12 +1,9 @@
 from machine import I2C
 from machine import Pin
 
-from config import get_config
+import config
 from ssd1306 import SSD1306_I2C
 
-
-# Load configuration
-config = get_config()
 
 # Setup screen
 screen_config = config['ssd1306']
