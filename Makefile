@@ -21,6 +21,7 @@ upload:
 	ampy -p ${PORT} put vendors/ssd1306.py
 	ampy -p ${PORT} put vendors/urequests.py
 	ampy -p ${PORT} put laboate/config.py
+	ampy -p ${PORT} put laboate/gfx.py
 	ampy -p ${PORT} put laboate/lenuage.py
 	ampy -p ${PORT} put laboate/main.py
 

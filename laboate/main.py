@@ -1,7 +1,9 @@
 from machine import idle, I2C, Pin
 import network
+import time
 
 from config import CONFIG
+from gfx import render_tile_item
 from lenuage import LeNuage
 from ssd1306 import SSD1306_I2C
 
@@ -29,12 +31,18 @@ print()
 nuage = LeNuage(CONFIG['lenuage']['base_url'],
                 CONFIG['lenuage']['api_key'])
 
-print(nuage.get_tiles())
-print(nuage.get_tile(49))
-
-# Test display
-screen.fill(0)
-screen.text('hello world', 0, 0)
-screen.show()
+while True:
+    print('Fetching tiles informations')
+    tiles_data = nuage.get_tiles()
+    for tile in tiles_data['tiles']:
+        print('Fetching tile data')
+        tile_data = nuage.get_tile(tile['id'])
+        # Clear screen
+        screen.fill(0)
+        for item in tile_data['items']:
+            fb = render_tile_item(item)
+            screen.blit(fb, item['x'], item['y'])
+        screen.show()
+        time.sleep_ms(tile_data['duration'])
 
 print('Done')
