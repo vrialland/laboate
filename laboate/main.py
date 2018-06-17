@@ -2,6 +2,7 @@ from machine import idle, I2C, Pin
 import network
 
 from config import CONFIG
+from lenuage import LeNuage
 from ssd1306 import SSD1306_I2C
 
 
@@ -23,6 +24,13 @@ while not sta_if.isconnected():
     idle()
     print('.', end='')
 print()
+
+# Setup lenuage
+nuage = LeNuage(CONFIG['lenuage']['base_url'],
+                CONFIG['lenuage']['api_key'])
+
+print(nuage.get_tiles())
+print(nuage.get_tile(49))
 
 # Test display
 screen.fill(0)
