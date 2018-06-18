@@ -40,8 +40,7 @@ while True:
         # Clear screen
         screen.fill(0)
         for item in tile_data['items']:
-            fb = render_tile_item(item)
-            screen.blit(fb, item['x'], item['y'])
+            render_tile_item(screen, item)
         screen.show()
         time.sleep_ms(tile_data['duration'])
 
