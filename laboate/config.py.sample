@@ -2,8 +2,8 @@ CONFIG = {
     # Screen configuration
     "ssd1306": {
         "address": 0x3c,  # Address
-        "sda": 2,  # SDA pin (GPIO number)
-        "scl": 1,  # SCL pin (GPIO number)
+        "sda": 4,  # SDA pin (GPIO number)
+        "scl": 5,  # SCL pin (GPIO number)
         "width": 128,  # Screen width
         "height": 64,  # Screen height,
         "scale": 1  # Upscale render
