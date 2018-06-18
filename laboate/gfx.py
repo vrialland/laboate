@@ -1,4 +1,13 @@
 from font import FONT_4x6, FONT_5x7, FONT_4x6_CHARS, FONT_5x7_CHARS
+import framebuf
+
+
+class ExtendedFrameBuffer(framebuf.FrameBuffer):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.buffer = bytearray(self.width * self.height // 8)
+        super().__init__(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
 
 
 def render_string(fb, string, font=FONT_5x7, x=0, y=0):
@@ -35,3 +44,12 @@ def render_tile_item(fb, item):
         render_bitmap(fb, item['width'], item['height'], int(item['content']),
                       item['x'], item['y'], True)
     return fb
+
+
+def scale(src, dest, factor=1):
+    for x in range(src.width):
+        for y in range(src.height):
+            value = src.pixel(x, y)
+            for dx in range(factor):
+                for dy in range(factor):
+                    dest.pixel(x * factor + dx, y * factor + dy, value)
