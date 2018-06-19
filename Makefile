@@ -29,3 +29,7 @@ upload:
 
 shell:
 	picocom ${PORT} -b ${BAUDRATE}
+
+
+flake8:
+	tox -e flake8

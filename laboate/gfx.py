@@ -7,7 +7,8 @@ class ExtendedFrameBuffer(framebuf.FrameBuffer):
         self.width = width
         self.height = height
         self.buffer = bytearray(self.width * self.height // 8)
-        super().__init__(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
+        super().__init__(self.buffer, self.width, self.height,
+                         framebuf.MONO_VLSB)
 
 
 def render_string(fb, string, font=FONT_5x7, x=0, y=0):
