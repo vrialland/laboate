@@ -4,4 +4,4 @@ python:
 install:
   - "pip install tox"
 script:
-  - "tox -e flake8"
+  - "make flake8"
