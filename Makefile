@@ -17,9 +17,14 @@ flash:
 upload:
 	mkdir -p vendors
 	curl https://raw.githubusercontent.com/micropython/micropython/master/drivers/display/ssd1306.py > vendors/ssd1306.py
-	ampy -p ${PORT} put vendors/ssd1306.py
-	ampy -p ${PORT} put laboate/config.py
-	ampy -p ${PORT} put laboate/main.py
+	curl https://raw.githubusercontent.com/micropython/micropython-lib/master/urequests/urequests.py > vendors/urequests.py
+	ampy -p ${PORT} -b ${BAUDRATE} put vendors/ssd1306.py
+	ampy -p ${PORT} -b ${BAUDRATE} put vendors/urequests.py
+	ampy -p ${PORT} -b ${BAUDRATE} put laboate/config.py
+	ampy -p ${PORT} -b ${BAUDRATE} put laboate/font.py
+	ampy -p ${PORT} -b ${BAUDRATE} put laboate/gfx.py
+	ampy -p ${PORT} -b ${BAUDRATE} put laboate/lenuage.py
+	ampy -p ${PORT} -b ${BAUDRATE} put laboate/main.py
 
 
 shell:

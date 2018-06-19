@@ -1,7 +1,10 @@
 from machine import idle, I2C, Pin
 import network
+import time
 
 from config import CONFIG
+from gfx import ExtendedFrameBuffer, render_tile_item, scale
+from lenuage import LeNuage
 from ssd1306 import SSD1306_I2C
 
 
@@ -13,6 +16,7 @@ screen = SSD1306_I2C(screen_config['width'],
                      screen_config['height'],
                      i2c,
                      addr=screen_config['address'])
+boite_fb = ExtendedFrameBuffer(32, 16)
 
 # Setup Wifi connection
 sta_if = network.WLAN(network.STA_IF)
@@ -24,9 +28,27 @@ while not sta_if.isconnected():
     print('.', end='')
 print()
 
-# Test display
-screen.fill(0)
-screen.text('hello world', 0, 0)
-screen.show()
+# Setup lenuage
+nuage = LeNuage(CONFIG['lenuage']['base_url'],
+                CONFIG['lenuage']['api_key'])
+
+while True:
+    print('Fetching tiles informations')
+    tiles_data = nuage.get_tiles()
+    for tile in tiles_data['tiles']:
+        print('Fetching tile data')
+        tile_data = nuage.get_tile(tile['id'])
+        # Clear screens
+        screen.fill(0)
+        boite_fb.fill(0)
+        # Render tiles
+        for item in tile_data['items']:
+            render_tile_item(boite_fb, item)
+        # Upscale if needed
+        scale(boite_fb, screen, CONFIG['ssd1306']['scale'])
+        # Update display
+        screen.show()
+        # Wait
+        time.sleep_ms(tile_data['duration'])
 
 print('Done')

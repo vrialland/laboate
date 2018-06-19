@@ -1,14 +1,19 @@
 CONFIG = {
     # Screen configuration
     "ssd1306": {
-        "address": 0x3c, # Address
-        "sda": 2, # SDA pin (GPIO number)
-        "scl": 1, # SCL pin (GPIO number)
-        "width": 128, # Screen width
-        "height": 64 # Screen height
+        "address": 0x3c,  # Address
+        "sda": 4,  # SDA pin (GPIO number)
+        "scl": 5,  # SCL pin (GPIO number)
+        "width": 128,  # Screen width
+        "height": 64,  # Screen height,
+        "scale": 1  # Upscale render
     },
     "wifi": {
-        "ssid": "ssid", # Wifi SSID
-        "password": "password" # Wifi password
+        "ssid": "ssid",  # Wifi SSID
+        "password": "password"  # Wifi password
+    },
+    "lenuage": {
+        "base_url": "https://lenuage.io/",  # URL to lenuage instance
+        "api_key": "uuid"  # API key of your laboite object
     }
 }
