@@ -6,7 +6,7 @@ CONFIG = {
         "scl": 5,  # SCL pin (GPIO number)
         "width": 128,  # Screen width
         "height": 64,  # Screen height,
-        "scale": 1  # Upscale render
+        "scale": 2  # Upscale render
     },
     "wifi": {
         "ssid": "ssid",  # Wifi SSID
