@@ -5,6 +5,7 @@ class LeNuage:
     def __init__(self, base_url, api_key):
         self.base_url = base_url
         self.api_key = api_key
+        self._tiles_cache = {}
 
     def _get_tiles_url(self):
         return '{}/boites/{}/'.format(self.base_url.rstrip('/'),
@@ -21,12 +22,38 @@ class LeNuage:
         response = urequests.get(url)
         json = response.json()
         response.close()
+        # Cache tiles' id and last_activity
+        for tile in json['tiles']:
+            tile_id = tile['id']
+            if tile_id not in self._tiles_cache:
+                # Tile is not known yet
+                self._tiles_cache[tile_id] = {
+                    'last_activity': tile['last_activity'],
+                    'update_needed': True,
+                    'data': None
+                }
+            else:
+                cache = self._tiles_cache[tile_id]
+                if tile['last_activity'] != cache['last_activity']:
+                    # Tile needs update
+                    cache['last_activity'] = tile['last_activity']
+                    cache['update_needed'] = True
         return json
 
     def get_tile(self, tile_id):
-        url = self._get_tile_url(tile_id)
-        print('GET {}'.format(url))
-        response = urequests.get(url)
-        json = response.json()
-        response.close()
-        return json
+        cache = self._tiles_cache.get(tile_id)
+        if not cache or cache['update_needed']:
+            # No cache set or tile needs refresh
+            url = self._get_tile_url(tile_id)
+            print('Get tile {} data from {}'.format(tile_id, url))
+            response = urequests.get(url)
+            json = response.json()
+            response.close()
+            cache['data'] = json
+            cache['update_needed'] = False
+            data = json
+        else:
+            # Get data from cache
+            print('Get tile {} data from cache'.format(tile_id))
+            data = cache['data']
+        return data
