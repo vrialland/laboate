@@ -1,4 +1,5 @@
 from font import FONT_4x6, FONT_5x7, FONT_4x6_CHARS, FONT_5x7_CHARS
+from utils import timeit
 import framebuf
 
 
@@ -37,6 +38,7 @@ def render_bitmap(fb, width, height, content, x=0, y=0, decr_offset=False):
             offset -= 1
 
 
+@timeit
 def render_tile_item(fb, item):
     print('Rendering tile item', item)
     if item['type'] == 'text':

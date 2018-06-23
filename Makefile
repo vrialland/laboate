@@ -25,6 +25,7 @@ upload:
 	ampy -p ${PORT} -b ${BAUDRATE} put laboate/gfx.py
 	ampy -p ${PORT} -b ${BAUDRATE} put laboate/lenuage.py
 	ampy -p ${PORT} -b ${BAUDRATE} put laboate/main.py
+	ampy -p ${PORT} -b ${BAUDRATE} put laboate/utils.py
 
 
 shell:
