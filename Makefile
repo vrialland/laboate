@@ -15,11 +15,14 @@ flash:
 
 
 upload:
-	mkdir -p vendors
+	mkdir -p vendors/uasyncio
 	curl https://raw.githubusercontent.com/micropython/micropython/master/drivers/display/ssd1306.py > vendors/ssd1306.py
-	curl https://raw.githubusercontent.com/micropython/micropython-lib/master/urequests/urequests.py > vendors/urequests.py
+	curl https://raw.githubusercontent.com/micropython/micropython-lib/master/uaiohttpclient/uaiohttpclient.py > vendors/uaiohttpclient.py
+	curl https://raw.githubusercontent.com/micropython/micropython-lib/master/uasyncio/uasyncio/__init__.py > vendors/uasyncio/__init__.py
+	curl https://raw.githubusercontent.com/micropython/micropython-lib/master/uasyncio.core/uasyncio/core.py > vendors/uasyncio/core.py
 	ampy -p ${PORT} -b ${BAUDRATE} put vendors/ssd1306.py
-	ampy -p ${PORT} -b ${BAUDRATE} put vendors/urequests.py
+	ampy -p ${PORT} -b ${BAUDRATE} put vendors/uasyncio
+	ampy -p ${PORT} -b ${BAUDRATE} put vendors/uaiohttpclient.py
 	ampy -p ${PORT} -b ${BAUDRATE} put laboate/config.py
 	ampy -p ${PORT} -b ${BAUDRATE} put laboate/font.py
 	ampy -p ${PORT} -b ${BAUDRATE} put laboate/gfx.py

@@ -1,4 +1,5 @@
-import urequests
+import uaiohttpclient as aiohttp
+import ujson as json
 
 
 class LeNuage:
@@ -16,12 +17,15 @@ class LeNuage:
                                                self.api_key,
                                                tile_id)
 
-    def get_tiles(self):
+    async def _get_response_json(self, response):
+        text = await response.read()
+        return json.loads(text)
+
+    async def get_tiles(self):
         url = self._get_tiles_url()
         print('GET {}'.format(url))
-        response = urequests.get(url)
-        json = response.json()
-        response.close()
+        response = await aiohttp.request('GET', url)
+        json = await self._get_response_json(response)
         # Cache tiles' id and last_activity
         for tile in json['tiles']:
             tile_id = tile['id']
@@ -40,15 +44,14 @@ class LeNuage:
                     cache['update_needed'] = True
         return json
 
-    def get_tile(self, tile_id):
+    async def get_tile(self, tile_id):
         cache = self._tiles_cache.get(tile_id)
         if not cache or cache['update_needed']:
             # No cache set or tile needs refresh
             url = self._get_tile_url(tile_id)
             print('Get tile {} data from {}'.format(tile_id, url))
-            response = urequests.get(url)
-            json = response.json()
-            response.close()
+            response = await aiohttp.request('GET', url)
+            json = await self._get_response_json(response)
             cache['data'] = json
             cache['update_needed'] = False
             data = json
