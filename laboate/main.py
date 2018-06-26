@@ -53,6 +53,7 @@ async def main_loop():
             # Render tiles on buffer b
             for item in tile_data['items']:
                 render_tile_item(buffer_b, item, config.DISPLAY_SCALE)
+            screen.contrast(int(tile_data['brightness'] // 15 * 255))
             # Animate
             scroll(screen, buffer_a, buffer_b,
                    config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
