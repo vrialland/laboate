@@ -13,42 +13,43 @@ async def main_loop():
     # Setup Wifi connection
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(True)
-    print('Connecting to Wifi network "{}"'.format(CONFIG['wifi']['ssid']))
+    print(b'Connecting to Wifi network "%s"' % (
+        CONFIG['wifi']['ssid'].encode('utf-8')))
     sta_if.connect(CONFIG['wifi']['ssid'], CONFIG['wifi']['password'])
     while not sta_if.isconnected():
         idle()
-        print('.', end='')
+        print(b'.', end='')
     print()
 
     # Setup screen
-    screen_config = CONFIG['ssd1306']
-    i2c = I2C(scl=Pin(screen_config['scl']),
-              sda=Pin(screen_config['sda']))
-    screen = SSD1306_I2C(screen_config['width'],
-                         screen_config['height'],
+    screen_config = CONFIG[b'ssd1306']
+    i2c = I2C(scl=Pin(screen_config[b'scl']),
+              sda=Pin(screen_config[b'sda']))
+    screen = SSD1306_I2C(screen_config[b'width'],
+                         screen_config[b'height'],
                          i2c,
-                         addr=screen_config['address'])
+                         addr=screen_config[b'address'])
 
     # Setup lenuage
-    nuage = LeNuage(CONFIG['lenuage']['base_url'],
-                    CONFIG['lenuage']['api_key'])
+    nuage = LeNuage(CONFIG[b'lenuage'][b'base_url'],
+                    CONFIG[b'lenuage'][b'api_key'])
 
     while True:
-        print('Fetching tiles informations')
+        print(b'Fetching tiles informations')
         tiles_data = await nuage.get_tiles()
         for tile in tiles_data['tiles']:
-            print('Fetching tile data')
+            print(b'Fetching tile data')
             tile_data = await nuage.get_tile(tile['id'])
             # Clear screens
             screen.fill(0)
             # Render tiles
-            for item in tile_data['items']:
-                render_tile_item(screen, item, CONFIG['ssd1306']['scale'])
+            for item in tile_data[b'items']:
+                render_tile_item(screen, item, CONFIG[b'ssd1306'][b'scale'])
             # Update display
             screen.show()
             # Wait
-            time.sleep_ms(tile_data['duration'])
-    print('Done')
+            time.sleep_ms(tile_data[b'duration'])
+    print(b'Done')
 
 # Setup asyncio
 loop = asyncio.get_event_loop()

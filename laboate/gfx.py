@@ -34,7 +34,7 @@ def render_bitmap(fb, width, height, content, x=0, y=0, decr_offset=False,
 
 @timeit
 def render_tile_item(fb, item, scale=1):
-    print('Rendering tile item', item)
+    print(b'Rendering tile item', item)
     if item['type'] == 'text':
         render_string(fb, item['content'], item['font'],
                       item['x'], item['y'], scale)
