@@ -13,11 +13,11 @@ async def main_loop():
     # Setup Wifi connection
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(True)
-    print(b'Connecting to network "%s"' % config.WIFI_SSID.encode('utf-8'))
+    print('Connecting to wifi network')
     sta_if.connect(config.WIFI_SSID, config.WIFI_PASSWORD)
     while not sta_if.isconnected():
         idle()
-        print(b'.', end='')
+        print('.', end='')
     print()
 
     # Setup screen
@@ -29,10 +29,10 @@ async def main_loop():
     nuage = LeNuage(config.LENUAGE_BASE_URL, config.LENUAGE_API_KEY)
 
     while True:
-        print(b'Fetching tiles informations')
+        print('Fetching tiles informations')
         tiles_data = await nuage.get_tiles()
         for tile in tiles_data['tiles']:
-            print(b'Fetching tile data')
+            print('Fetching tile data')
             tile_data = await nuage.get_tile(tile['id'])
             # Clear screens
             screen.fill(0)
@@ -43,7 +43,7 @@ async def main_loop():
             screen.show()
             # Wait
             time.sleep_ms(tile_data[b'duration'])
-    print(b'Done')
+    print('Done')
 
 # Setup asyncio
 loop = asyncio.get_event_loop()

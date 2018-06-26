@@ -21,7 +21,7 @@ class LeNuage:
 
     async def get_tiles(self):
         url = self._get_tiles_url()
-        print(b'GET ', url)
+        print('GET ', url)
         response = await aiohttp.request(b'GET', url)
         json = await self._get_response_json(response)
         # Cache tiles' id and last_activity
@@ -47,7 +47,7 @@ class LeNuage:
         if not cache or cache[b'update_needed']:
             # No cache set or tile needs refresh
             url = self._get_tile_url(tile_id)
-            print(b'Get tile %d data from %s' % (tile_id, url))
+            print('Get tile {} data from {}'.format(tile_id, url))
             response = await aiohttp.request('GET', url)
             json = await self._get_response_json(response)
             cache[b'data'] = json
@@ -55,6 +55,6 @@ class LeNuage:
             data = json
         else:
             # Get data from cache
-            print(b'Get tile %d data from cache' % (tile_id))
+            print('Get tile {} data from cache'.format(tile_id))
             data = cache[b'data']
         return data
