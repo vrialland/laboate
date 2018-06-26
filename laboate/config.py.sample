@@ -11,9 +11,9 @@ DISPLAY_HEIGHT = const(64)  # Screen height (pixels)
 DISPLAY_SCALE = const(4)  # Upscale render factor
 
 # Wifi config
-WIFI_SSID = b'some ssid'  # SSID
-WIFI_PASSWORD = b'your password'  # Password
+WIFI_SSID = 'some ssid'  # SSID
+WIFI_PASSWORD = 'your password'  # Password
 
 # LeNuage config
-LENUAGE_BASE_URL = b'http://lenuage.io'  # Base LeNuage instance URL
-LENUAGE_API_KEY = b'your-api-key'  # API key of your laboite object
+LENUAGE_BASE_URL = 'http://lenuage.io'  # Base LeNuage instance URL
+LENUAGE_API_KEY = 'your-api-key'  # API key of your laboite object

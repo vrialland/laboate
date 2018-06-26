@@ -34,7 +34,7 @@ Depending on your setup, you can override these environment variables:
 
 You will find a ready to use config file in `laboate` folder named `config.py.sample`.
 As storing the configuration consumes RAM, and in order to keep it as low as possible,
-please use `const` for integer values and prefer `bytes` over `str` for textual values.
+please use `const` for integer values.
 Here are the available options:
 
 ### Display
