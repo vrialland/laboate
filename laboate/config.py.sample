@@ -1,19 +1,19 @@
-CONFIG = {
-    # Screen configuration
-    "ssd1306": {
-        "address": 0x3c,  # Address
-        "sda": 4,  # SDA pin (GPIO number)
-        "scl": 5,  # SCL pin (GPIO number)
-        "width": 128,  # Screen width
-        "height": 64,  # Screen height,
-        "scale": 2  # Upscale render
-    },
-    "wifi": {
-        "ssid": "ssid",  # Wifi SSID
-        "password": "password"  # Wifi password
-    },
-    "lenuage": {
-        "base_url": "https://lenuage.io/",  # URL to lenuage instance
-        "api_key": "uuid"  # API key of your laboite object
-    }
-}
+from micropython import const
+
+# SSD1306 screen config
+SSD1306_ADDRESS = const(0x3c)  # Address
+SSD1306_SDA = const(4)  # SDA pin (GPIO number)
+SSD1306_SCL = const(5)  # SCL pin (GPIO number)
+
+# Display config
+DISPLAY_WIDTH = const(128)  # Screen width (pixels)
+DISPLAY_HEIGHT = const(64)  # Screen height (pixels)
+DISPLAY_SCALE = const(4)  # Upscale render factor
+
+# Wifi config
+WIFI_SSID = b'some ssid'  # SSID
+WIFI_PASSWORD = b'your password'  # Password
+
+# LeNuage config
+LENUAGE_BASE_URL = b'http://lenuage.io'  # Base LeNuage instance URL
+LENUAGE_API_KEY = b'your-api-key'  # API key of your laboite object

@@ -2,10 +2,10 @@ from machine import idle, I2C, Pin
 import network
 import time
 
-from config import CONFIG
 from gfx import render_tile_item
 from lenuage import LeNuage
 from ssd1306 import SSD1306_I2C
+import config
 import uasyncio as asyncio
 
 
@@ -13,26 +13,20 @@ async def main_loop():
     # Setup Wifi connection
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(True)
-    print(b'Connecting to Wifi network "%s"' % (
-        CONFIG['wifi']['ssid'].encode('utf-8')))
-    sta_if.connect(CONFIG['wifi']['ssid'], CONFIG['wifi']['password'])
+    print(b'Connecting to network "%s"' % config.WIFI_SSID.encode('utf-8'))
+    sta_if.connect(config.WIFI_SSID, config.WIFI_PASSWORD)
     while not sta_if.isconnected():
         idle()
         print(b'.', end='')
     print()
 
     # Setup screen
-    screen_config = CONFIG[b'ssd1306']
-    i2c = I2C(scl=Pin(screen_config[b'scl']),
-              sda=Pin(screen_config[b'sda']))
-    screen = SSD1306_I2C(screen_config[b'width'],
-                         screen_config[b'height'],
-                         i2c,
-                         addr=screen_config[b'address'])
+    i2c = I2C(scl=Pin(config.SSD1306_SCL), sda=Pin(config.SSD1306_SDA))
+    screen = SSD1306_I2C(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT, i2c,
+                         addr=config.SSD1306_ADDRESS)
 
     # Setup lenuage
-    nuage = LeNuage(CONFIG[b'lenuage'][b'base_url'],
-                    CONFIG[b'lenuage'][b'api_key'])
+    nuage = LeNuage(config.LENUAGE_BASE_URL, config.LENUAGE_API_KEY)
 
     while True:
         print(b'Fetching tiles informations')
@@ -44,7 +38,7 @@ async def main_loop():
             screen.fill(0)
             # Render tiles
             for item in tile_data[b'items']:
-                render_tile_item(screen, item, CONFIG[b'ssd1306'][b'scale'])
+                render_tile_item(screen, item, config.DISPLAY_SCALE)
             # Update display
             screen.show()
             # Wait
