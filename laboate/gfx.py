@@ -5,10 +5,12 @@ from micropython import const
 
 
 # Scroll directions
-TRANSITION_LEFT = const(1)
-TRANSITION_RIGHT = const(2)
-TRANSITION_UP = const(3)
-TRANSITION_DOWN = const(4)
+TRANSITION_NONE = const(0)
+TRANSITION_FADE = const(1)
+TRANSITION_LEFT = const(2)
+TRANSITION_RIGHT = const(3)
+TRANSITION_UP = const(4)
+TRANSITION_DOWN = const(5)
 _TRANSITION_STEPS = const(32)
 
 
@@ -54,9 +56,16 @@ def render_tile_item(fb, item, scale=1):
     return fb
 
 
-def scroll(screen, old_fb, new_fb, width, height, direction=TRANSITION_LEFT,
-           duration=500):
+def transition(screen, old_fb, new_fb, width, height, effect=TRANSITION_NONE,
+               duration=500):
     screen.fill(0)
+
+    # No transition exit ASAP
+    if effect == TRANSITION_NONE:
+        screen.blit(new_fb, 0, 0)
+        screen.show()
+        return
+
     # Show old framebuffer
     screen.blit(old_fb, 0, 0)
     screen.show()
@@ -65,25 +74,29 @@ def scroll(screen, old_fb, new_fb, width, height, direction=TRANSITION_LEFT,
 
     sleep = duration // _TRANSITION_STEPS
 
-    if direction == TRANSITION_LEFT:
+    if effect == TRANSITION_FADE:
+        # TODO
+        return transition(screen, old_fb, new_fb, width, height,
+                          TRANSITION_NONE)
+    elif effect == TRANSITION_LEFT:
         for x in range(0, width + 1, width // _TRANSITION_STEPS):
             screen.blit(old_fb, -x, 0)
             screen.blit(new_fb, width - x, 0)
             screen.show()
             time.sleep_ms(sleep)
-    elif direction == TRANSITION_RIGHT:
+    elif effect == TRANSITION_RIGHT:
         for x in range(0, width + 1, width // _TRANSITION_STEPS):
             screen.blit(old_fb, x, 0)
             screen.blit(new_fb, x - width, 0)
             screen.show()
             time.sleep_ms(sleep)
-    elif direction == TRANSITION_UP:
+    elif effect == TRANSITION_UP:
         for y in range(0, height + 1, height // _TRANSITION_STEPS):
             screen.blit(old_fb, 0, -y)
             screen.blit(new_fb, 0, height - y)
             screen.show()
             time.sleep_ms(sleep)
-    elif direction == TRANSITION_DOWN:
+    elif effect == TRANSITION_DOWN:
         for y in range(0, height + 1, height // _TRANSITION_STEPS):
             screen.blit(old_fb, 0, y)
             screen.blit(new_fb, 0, y - height)
